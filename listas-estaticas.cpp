@@ -129,8 +129,7 @@ class Lista {
         }
 
         int inserta(Empleado empleado, int posicion) {
-            if (llena() || posicion < 0 || posicion > ultimo + 1) {
-                std::cout << "No se pudo insertar el empleado" << std::endl;
+            if (posicion < 0 || posicion > ultimo + 1) {
                 return 0;
             }
 
@@ -146,8 +145,7 @@ class Lista {
         }
 
         int elimina(int posicion) {
-            if (vacia() || posicion < 0 || posicion > ultimo) {
-                std::cout << "No se pudo eliminar el empleado" << std::endl;
+            if (posicion < 0 || posicion > ultimo) {
                 return 0;
             }
 
@@ -171,10 +169,21 @@ class Lista {
                 }
             }
         }
+
+        int buscar(Empleado empleado) {
+            int i;
+            for (i = 0; i < ultimo + 1; i++) {
+                if (empleados[i] == empleado) {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
 };
 
 int main() {
-    int opcion, posicion;
+    int opcion, posicion, resultado;
     Empleado empleado;
     Lista lista;
 
@@ -195,18 +204,53 @@ int main() {
                 lista.agrega(empleado);
                 break;
             case 2:
-                
+                if (lista.vacia()) {
+                    std::cout << "La lista esta vacia" << std::endl;
+                    break;
+                }
+
+                std::cout << "Ingrese el empleado a buscar" << std::endl;
+                std::cin >> empleado;
+                resultado = lista.buscar(empleado);
+
+                if (resultado != -1) {
+                    std::cout << "Empleado encontrado en la posicion: " << resultado << std::endl; 
+                } else {
+                    std::cout << "No se encontro al empleado" << std::endl;
+                }
                 break;
             case 3:
+                if (lista.vacia()) {
+                    std::cout << "La lista esta vacia" << std::endl;
+                    break;
+                }
+
                 std::cout << "Ingrese la posicon a eliminar: ";
                 std::cin >> posicion;
-                lista.elimina(posicion);
+                resultado = lista.elimina(posicion);
+
+                if (resultado == 0) {
+                    std::cout << "Posicion invalida" << std::endl;
+                } else {
+                    std::cout << "Empleado eliminado" << std::endl;
+                }
                 break;
             case 4:
+                if (lista.llena()) {
+                    std::cout << "La lista esta llena" << std::endl;
+                }
+
                 std::cout << "Ingrese la posicon a insertar: ";
                 std::cin >> posicion;
                 std::cin >> empleado;
-                lista.inserta(empleado, posicion);
+
+                resultado = lista.inserta(empleado, posicion);
+
+                if (resultado == 0) {
+                    std::cout << "Posicion invalida" << std::endl;
+                } else {
+                    std::cout << "Empleado agregado" << std::endl;
+                }
                 break;
             case 5:
                 lista.muestra();
